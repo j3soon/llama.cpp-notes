@@ -44,3 +44,21 @@ docker run --rm -it --gpus all --network=host \
 ```
 
 As mentioned in the Unsloth docs, the `Nemotron-3-Nano-30B-A3B-GGUF` model will take up to 24GB VRAM without offloading.
+
+## Qwen3.5
+
+Follow the [Unsloth docs](https://unsloth.ai/docs/models/qwen3.5#qwen3.5-35b-a3b):
+
+```sh
+docker run --rm -it --gpus all --network=host \
+  -v ./models:/root/.cache/llama.cpp \
+  ghcr.io/ggml-org/llama.cpp:server-cuda \
+    -hf unsloth/Qwen3.5-35B-A3B-GGUF:MXFP4_MOE \
+    --ctx-size 16384 \
+    --temp 0.6 \
+    --top-p 0.95 \
+    --top-k 20 \
+    --min-p 0.00
+```
+
+As mentioned in the Unsloth docs, the `Qwen3.5-35B-A3B-GGUF` model will take up to 24GB VRAM without offloading.
