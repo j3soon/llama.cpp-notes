@@ -121,13 +121,44 @@ Above seems to run well on 24GB VRAM.
 
 ## Appendix
 
-### API
+### API (Insecure)
 
 Local API:
 
 ```sh
 curl http://127.0.0.1:8080/v1/chat/completions \
   -H 'Content-Type: application/json' \
+  -d '{
+    "messages": [
+      {"role": "user", "content": "Hello"}
+    ]
+  }'
+```
+
+with API key:
+
+Take port `37000` and `gpt-oss-120b` on a DGX Spark as an example:
+
+```sh
+export API_KEY="sk-$(openssl rand -base64 36 | tr -dc 'a-zA-Z0-9' | head -c 48)"
+echo "API_KEY: $API_KEY"
+docker run --rm -it --gpus all --network=host \
+  -v ./models:/root/.cache/llama.cpp \
+  j3soon/llama.cpp:server-cuda-spark \
+    -hf ggml-org/gpt-oss-120b-GGUF \
+    --ctx-size 0 --jinja -ub 2048 -b 2048 \
+    --api-key "$API_KEY" \
+    --port 30000
+```
+
+and then:
+
+```sh
+IP=<IP_ADDRESS_OF_DGX_SPARK>
+API_KEY="<API_KEY_FROM_ABOVE>"
+curl http://$IP:30000/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -H "Authorization: Bearer $API_KEY" \
   -d '{
     "messages": [
       {"role": "user", "content": "Hello"}
