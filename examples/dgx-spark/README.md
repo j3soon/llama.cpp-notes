@@ -1,6 +1,6 @@
 # DGX Spark Local llama.cpp
 
-Runs `llama.cpp` only, bound to `127.0.0.1` for local access.
+Runs `llama.cpp` behind a minimal NGINX reverse proxy. No HTTPS yet.
 
 ## Setup
 
@@ -22,4 +22,6 @@ curl http://127.0.0.1:37000/v1/chat/completions \
   }'
 ```
 
-Edit [`compose.yaml`](/workspace/examples/dgx-spark/compose.yaml) directly if you want a different model, port, or llama.cpp flags.
+`llm` is private on the Compose network. NGINX is the only published port.
+
+Edit [`compose.yaml`](./compose.yaml) if you want a different model or host port. Edit [`nginx.conf`](./nginx.conf) if you want to change the proxy behavior.
