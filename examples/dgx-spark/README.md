@@ -1,20 +1,24 @@
 # DGX Spark Local llama.cpp
 
-Runs `llama.cpp` behind a minimal NGINX reverse proxy. No HTTPS yet.
+Runs `llama.cpp` behind a minimal NGINX reverse proxy with a static Bearer token. No HTTPS yet.
 
 ## Setup
 
 ```sh
 cd examples/dgx-spark
 mkdir -p ../../models
+./scripts/gen_env.sh
+cat .env
 docker compose up -d
 ```
 
 ## Test
 
 ```sh
+LLM_API_KEY='<value from .env>'
 curl http://127.0.0.1:37000/v1/chat/completions \
   -H 'Content-Type: application/json' \
+  -H "Authorization: Bearer $LLM_API_KEY" \
   -d '{
     "messages": [
       {"role": "user", "content": "Hello"}
