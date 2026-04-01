@@ -2,6 +2,8 @@
 
 Runs `llama.cpp` behind NGINX with a static Bearer token and a Let's Encrypt certificate.
 
+The llama.cpp web UI is also exposed on `http://127.0.0.1:38000` for host-local access only.
+
 ## Setup
 
 ```sh
@@ -37,6 +39,12 @@ curl https://$SERVER_NAME:37000/v1/chat/completions \
   }'
 ```
 
+Local llama.cpp UI from the Docker host:
+
+```sh
+curl http://127.0.0.1:38000/
+```
+
 ## Security Scan
 
 ```sh
@@ -45,7 +53,7 @@ LLM_API_KEY='<value from .env>'
 ./scripts/security_scan.sh "$SERVER_NAME" "$LLM_API_KEY"
 ```
 
-`llm` is private on the Compose network. NGINX is the only published port.
+`llm` stays private on the Compose network, except for a localhost-only UI binding on `127.0.0.1:38000`. NGINX is the only remotely reachable entrypoint.
 
 Remote clients can access only `/v1/chat/completions`. Full access remains available from localhost.
 

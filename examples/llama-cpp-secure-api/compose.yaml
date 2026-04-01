@@ -13,6 +13,8 @@ services:
       -b 2048
     expose:
       - "37000"
+    ports:
+      - "127.0.0.1:38000:37000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:37000"]
     volumes:
