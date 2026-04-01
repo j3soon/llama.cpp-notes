@@ -1,22 +1,27 @@
-# DGX Spark Local llama.cpp
+# llama.cpp Secure API
 
 Runs `llama.cpp` behind NGINX with a static Bearer token and a Let's Encrypt certificate.
 
 ## Setup
 
 ```sh
-cd examples/dgx-spark
+cd examples/llama-cpp-secure-api
 mkdir -p ../../models state/letsencrypt state/www
 ./scripts/gen_env.sh
 cat .env
 docker compose up -d
+# Only needed the first time, after Certbot gets the initial certificate.
+docker compose restart nginx
 ```
 
 Requirements:
 
+- `LLAMA_CPP_IMAGE` in `.env` must match your system.
+- Use `j3soon/llama.cpp:server-cuda-spark` on DGX Spark.
+- Use `ghcr.io/ggml-org/llama.cpp:server-cuda` on x86 CUDA hosts such as RTX PRO 6000.
 - `SERVER_NAME` in `.env` must resolve to this host.
 - Port `80` and `37000` must be reachable from the public internet for the ACME challenge and API access.
-- After Certbot gets the first certificate, run `docker compose restart nginx` once so NGINX switches from HTTP bootstrap mode to HTTPS mode.
+- `docker compose restart nginx` is needed once after Certbot gets the first certificate so NGINX switches from HTTP bootstrap mode to HTTPS mode.
 
 ## Test
 

@@ -1,6 +1,6 @@
 services:
   llm:
-    image: j3soon/llama.cpp:server-cuda-spark
+    image: ${LLAMA_CPP_IMAGE}
     container_name: local-llm-llama-cpp
     restart: unless-stopped
     gpus: all
