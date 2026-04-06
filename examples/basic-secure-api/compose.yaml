@@ -3,7 +3,6 @@ services:
     image: ${LLAMA_CPP_IMAGE}
     container_name: local-llm-llama-cpp
     restart: unless-stopped
-    gpus: all
     command: >-
       -hf unsloth/NVIDIA-Nemotron-3-Super-120B-A12B-GGUF:UD-Q4_K_XL
       --port 37000
@@ -18,6 +17,13 @@ services:
       test: ["CMD", "curl", "-f", "http://localhost:37000"]
     volumes:
       - ../../.cache:/root/.cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
   nginx:
     image: nginx:1.29
