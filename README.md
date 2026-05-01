@@ -76,6 +76,25 @@ docker run --rm -it --gpus all --network=host \
 
 As mentioned in the Unsloth docs, the `NVIDIA-Nemotron-3-Super-120B-A12B-GGUF` model will take up to 64GB-72GB VRAM without offloading.
 
+### Nemotron 3 Nano Omni
+
+Follow the [Unsloth docs](https://unsloth.ai/docs/models/nemotron-3-nano-omni) for the Nemotron 3 Nano Omni model:
+
+```sh
+docker run --rm -it --gpus all --network=host \
+  -v ./.cache:/root/.cache \
+  ghcr.io/ggml-org/llama.cpp:server-cuda \
+    -hf unsloth/NVIDIA-Nemotron-3-Nano-Omni-30B-A3B-Reasoning-GGUF:UD-Q4_K_XL \
+    --host 0.0.0.0 \
+    --port 30000 \
+    --prio 3 \
+    --temp 1.0 \
+    --top-p 1.0 \
+    --jinja
+```
+
+As mentioned in the Unsloth docs, the `NVIDIA-Nemotron-3-Nano-Omni-30B-A3B-Reasoning-GGUF` model will take up to ~25GB VRAM without offloading.
+
 ### Qwen3.5
 
 Follow the [Unsloth docs](https://unsloth.ai/docs/models/qwen3.5#qwen3.5-35b-a3b):
